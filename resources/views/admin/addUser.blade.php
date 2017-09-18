@@ -57,7 +57,7 @@
                                                             <span></span>
                                                         </label>
                                                         <label class="mt-radio">
-                                                            <input type="radio" name="usage" value="2" checked> 电脑
+                                                            <input type="radio" name="usage" value="2"> 电脑
                                                             <span></span>
                                                         </label>
                                                         <label class="mt-radio">
@@ -65,7 +65,7 @@
                                                             <span></span>
                                                         </label>
                                                         <label class="mt-radio">
-                                                            <input type="radio" name="usage" value="4"> 其他
+                                                            <input type="radio" name="usage" value="4" checked> 其他
                                                             <span></span>
                                                         </label>
                                                     </div>
@@ -76,6 +76,10 @@
                                                 <div class="col-md-8">
                                                     <div class="mt-radio-inline">
                                                         <label class="mt-radio">
+                                                            <input type="radio" name="pay_way" value="0" checked> 免费
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="mt-radio">
                                                             <input type="radio" name="pay_way" value="1"> 月付
                                                             <span></span>
                                                         </label>
@@ -84,22 +88,42 @@
                                                             <span></span>
                                                         </label>
                                                         <label class="mt-radio">
-                                                            <input type="radio" name="pay_way" value="3" checked> 年付
+                                                            <input type="radio" name="pay_way" value="3"> 年付
                                                             <span></span>
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="balance" class="col-md-3 control-label">金额</label>
+                                                <label for="balance" class="col-md-3 control-label">级别</label>
+                                                <div class="col-md-8">
+                                                    <select class="form-control" name="level" id="level">
+                                                        <option value="1" selected>倔强青铜</option>
+                                                        <option value="2">秩序白银</option>
+                                                        <option value="3">荣耀黄金</option>
+                                                        <option value="4">尊贵铂金</option>
+                                                        <option value="5">永恒钻石</option>
+                                                        <option value="6">至尊黑曜</option>
+                                                        <option value="7">最强王者</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="balance" class="col-md-3 control-label">余额</label>
                                                 <div class="col-md-8">
                                                     <input type="text" class="form-control" name="balance" value="0" id="balance" placeholder="" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label for="score" class="col-md-3 control-label">积分</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="score" value="0" id="score" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="col-md-3 control-label">有效期</label>
                                                 <div class="col-md-8">
-                                                    <div class="input-group input-large date-picker input-daterange" data-date="2017-10-10" data-date-format="yyyy-mm-dd">
+                                                    <div class="input-group input-large input-daterange">
                                                         <input type="text" class="form-control" name="enable_time" id="enable_time">
                                                         <span class="input-group-addon"> 至 </span>
                                                         <input type="text" class="form-control" name="expire_time" id="expire_time">
@@ -170,16 +194,6 @@
                                                 <label for="method" class="col-md-3 control-label">加密方式</label>
                                                 <div class="col-md-8">
                                                     <select class="form-control" name="method" id="method">
-                                                        @foreach ($method_list as $method)
-                                                            <option value="{{$method->name}}" @if($method->is_default) selected @endif>{{$method->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="custom_method" class="col-md-3 control-label">自定义加密方式</label>
-                                                <div class="col-md-8">
-                                                    <select class="form-control" name="custom_method" id="custom_method">
                                                         @foreach ($method_list as $method)
                                                             <option value="{{$method->name}}" @if($method->is_default) selected @endif>{{$method->name}}</option>
                                                         @endforeach
@@ -289,11 +303,14 @@
     <script src="/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        // 过期时间
-        $(".date-picker").datepicker({
-            language: 'zh-CN',
-            autoclose: true,
-            todayHighlight: true
+        // 有效期
+        $('.input-daterange input').each(function() {
+            $(this).datepicker({
+                language: 'zh-CN',
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd'
+            });
         });
 
         // ajax同步提交
@@ -304,12 +321,14 @@
             var usage = $("input:radio[name='usage']:checked").val();
             var pay_way = $("input:radio[name='pay_way']:checked").val();
             var balance = $('#balance').val();
+            var score = $('#score').val();
             var enable_time = $('#enable_time').val();
             var expire_time = $('#expire_time').val();
             var wechat = $('#wechat').val();
             var qq = $('#qq').val();
             var is_admin = $('#is_admin').val();
             var remark = $('#remark').val();
+            var level = $("#level option:selected").val();
             var port = $('#port').val();
             var passwd = $('#passwd').val();
             var method = $('#method').val();
@@ -327,7 +346,7 @@
                 type: "POST",
                 url: "{{url('admin/addUser')}}",
                 async: false,
-                data: {_token:_token, username: username, password:password, usage:usage, pay_way:pay_way, balance:balance, enable_time:enable_time, expire_time:expire_time, wechat:wechat, qq:qq, is_admin:is_admin, remark:remark, port:port, passwd:passwd, method:method, custom_method:custom_method, transfer_enable:transfer_enable, enable:enable, protocol:protocol, protocol_param:protocol_param, obfs:obfs, obfs_param:obfs_param, speed_limit_per_con:speed_limit_per_con, speed_limit_per_user:speed_limit_per_user},
+                data: {_token:_token, username: username, password:password, usage:usage, pay_way:pay_way, balance:balance, score:score, enable_time:enable_time, expire_time:expire_time, wechat:wechat, qq:qq, is_admin:is_admin, remark:remark, level:level, port:port, passwd:passwd, method:method, custom_method:custom_method, transfer_enable:transfer_enable, enable:enable, protocol:protocol, protocol_param:protocol_param, obfs:obfs, obfs_param:obfs_param, speed_limit_per_con:speed_limit_per_con, speed_limit_per_user:speed_limit_per_user},
                 dataType: 'json',
                 success: function (ret) {
                     if (ret.status == 'success') {
@@ -345,7 +364,7 @@
 
         // 生成随机密码
         function makePasswd() {
-            $.get("{{url('makePasswd')}}",  function(ret) {
+            $.get("{{url('admin/makePasswd')}}",  function(ret) {
                 $("#passwd").val(ret);
             });
         }

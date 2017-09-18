@@ -114,10 +114,34 @@
                         <span class="title">账号管理</span>
                     </a>
                 </li>
-                <li class="nav-item {{Request::getRequestUri() == '/admin/nodeList' ? 'active open' : ''}}">
-                    <a href="{{url('admin/nodeList')}}" class="nav-link nav-toggle">
-                        <i class="icon-list"></i>
-                        <span class="title">节点管理</span>
+                <li class="nav-item {{Request::getRequestUri() == '/admin/inviteList' ? 'active open' : ''}}">
+                    <a href="{{url('admin/inviteList')}}" class="nav-link nav-toggle">
+                        <i class="icon-puzzle"></i>
+                        <span class="title">邀请码管理</span>
+                    </a>
+                </li>
+                <li class="nav-item {{Request::getRequestUri() == '/admin/articleList' ? 'active open' : ''}}">
+                    <a href="{{url('admin/articleList')}}" class="nav-link nav-toggle">
+                        <i class="icon-docs"></i>
+                        <span class="title">文章管理</span>
+                    </a>
+                </li>
+                <li class="nav-item {{in_array(Request::getRequestUri(), ['/shop/goodsList', '/shop/addGoods', '/shop/editGoods']) ? 'active open' : ''}}">
+                    <a href="{{url('shop/goodsList')}}" class="nav-link nav-toggle">
+                        <i class="icon-basket"></i>
+                        <span class="title">商品管理</span>
+                    </a>
+                </li>
+                <li class="nav-item {{in_array(Request::getRequestUri(), ['/coupon/couponList', '/coupon/addCoupon']) ? 'active open' : ''}}">
+                    <a href="{{url('coupon/couponList')}}" class="nav-link nav-toggle">
+                        <i class="icon-wallet"></i>
+                        <span class="title">卡券管理</span>
+                    </a>
+                </li>
+                <li class="nav-item {{in_array(Request::getRequestUri(), ['/ticket/ticketList', '/ticket/replyTicket']) ? 'active open' : ''}}">
+                    <a href="{{url('ticket/ticketList')}}" class="nav-link nav-toggle">
+                        <i class="icon-question"></i>
+                        <span class="title">工单管理</span>
                     </a>
                 </li>
                 <li class="nav-item {{Request::getRequestUri() == '/admin/trafficLog' ? 'active open' : ''}}">
@@ -126,9 +150,30 @@
                         <span class="title">流量日志</span>
                     </a>
                 </li>
-                <li class="nav-item {{Request::getRequestUri() == '/admin/convert' || Request::getRequestUri() == '/admin/import' || Request::getRequestUri() == '/admin/analysis' ? 'active open' : ''}}">
+                <li class="nav-item {{in_array(Request::getRequestUri(), ['/admin/nodeList', '/admin/addNode', '/admin/editNode', '/admin/groupList', '/admin/addGroup', '/admin/editGroup']) ? 'active open' : ''}}">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-layers"></i>
+                        <span class="title">节点管理</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item {{Request::getRequestUri() == '/admin/nodeList' ? 'active open' : ''}}">
+                            <a href="{{url('admin/nodeList')}}" class="nav-link ">
+                                <i class="icon-list"></i>
+                                <span class="title">节点列表</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{Request::getRequestUri() == '/admin/groupList' ? 'active open' : ''}}">
+                            <a href="{{url('admin/groupList')}}" class="nav-link ">
+                                <i class="icon-grid"></i>
+                                <span class="title">节点分组列表</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{Request::getRequestUri() == '/admin/convert' || Request::getRequestUri() == '/admin/import' || Request::getRequestUri() == '/admin/analysis' ? 'active open' : ''}}">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-wrench"></i>
                         <span class="title">工具箱</span>
                         <span class="arrow"></span>
                     </a>
@@ -168,8 +213,8 @@
                         </li>
                         <li class="nav-item {{Request::getRequestUri() == '/admin/system' ? 'active open' : ''}}">
                             <a href="{{url('admin/system')}}" class="nav-link ">
-                                <i class="icon-grid"></i>
-                                <span class="title">系统配置</span>
+                                <i class="icon-settings"></i>
+                                <span class="title">系统设置</span>
                             </a>
                         </li>
                     </ul>
@@ -189,7 +234,7 @@
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
-    <div class="page-footer-inner"> 2017 &copy; 胖虎 </div>
+    <div class="page-footer-inner"> 2017 &copy; <a href="https://github.com/ssrpanel/ssrpanel" target="_blank">SSRPanel</a> </div>
     <div class="scroll-to-top">
         <i class="icon-arrow-up"></i>
     </div>

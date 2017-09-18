@@ -43,14 +43,20 @@ class BaseController extends Controller
         $kb = 1024;
         $mb = 1048576;
         $gb = 1073741824;
-        if (abs($value) > $gb) {
+        $tb = $gb * 1024;
+        $pb = $tb * 1024;
+        if (abs($value) > $pb) {
+            return round($value / $pb, 2) . "PB";
+        } elseif (abs($value) > $tb) {
+            return round($value / $tb, 2) . "TB";
+        } elseif (abs($value) > $gb) {
             return round($value / $gb, 2) . "GB";
-        } else if (abs($value) > $mb) {
+        } elseif (abs($value) > $mb) {
             return round($value / $mb, 2) . "MB";
-        } else if (abs($value) > $kb) {
+        } elseif (abs($value) > $kb) {
             return round($value / $kb, 2) . "KB";
         } else {
-            return round($value, 2);
+            return round($value, 2) . "B";
         }
     }
 
@@ -136,5 +142,24 @@ class BaseController extends Controller
         }
 
         return array_slice($lines, 0, $n);
+    }
+
+    /**
+     * 文件大小转换
+     *
+     * @param int $bytes
+     * @param int $precision
+     *
+     * @return string
+     */
+    public function formatBytes($bytes, $precision = 2)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }

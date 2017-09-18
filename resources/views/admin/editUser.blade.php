@@ -77,6 +77,10 @@
                                                 <div class="col-md-8">
                                                     <div class="mt-radio-inline">
                                                         <label class="mt-radio">
+                                                            <input type="radio" name="pay_way" value="0" {{$user->pay_way == 0 ? 'checked' : ''}}> 月付
+                                                            <span></span>
+                                                        </label>
+                                                        <label class="mt-radio">
                                                             <input type="radio" name="pay_way" value="1" {{$user->pay_way == 1 ? 'checked' : ''}}> 月付
                                                             <span></span>
                                                         </label>
@@ -92,20 +96,50 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="balance" class="col-md-3 control-label">金额</label>
+                                                <label for="balance" class="col-md-3 control-label">级别</label>
+                                                <div class="col-md-8">
+                                                    <select class="form-control" name="level" id="level">
+                                                        <option value="1" {{$user->level == 1 ? 'selected' : ''}}>倔强青铜</option>
+                                                        <option value="2" {{$user->level == 2 ? 'selected' : ''}}>秩序白银</option>
+                                                        <option value="3" {{$user->level == 3 ? 'selected' : ''}}>荣耀黄金</option>
+                                                        <option value="4" {{$user->level == 4 ? 'selected' : ''}}>尊贵铂金</option>
+                                                        <option value="5" {{$user->level == 5 ? 'selected' : ''}}>永恒钻石</option>
+                                                        <option value="6" {{$user->level == 6 ? 'selected' : ''}}>至尊黑曜</option>
+                                                        <option value="7" {{$user->level == 7 ? 'selected' : ''}}>最强王者</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="balance" class="col-md-3 control-label">余额</label>
                                                 <div class="col-md-8">
                                                     <input type="text" class="form-control" name="balance" value="{{$user->balance}}" id="balance" placeholder="" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label for="score" class="col-md-3 control-label">积分</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="score" value="{{$user->score}}" id="score" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="col-md-3 control-label">有效期</label>
                                                 <div class="col-md-8">
-                                                    <div class="input-group input-large date-picker input-daterange" data-date="2017-10-10" data-date-format="yyyy-mm-dd">
+                                                    <div class="input-group input-large input-daterange">
                                                         <input type="text" class="form-control" name="enable_time" value="{{$user->enable_time}}" id="enable_time">
                                                         <span class="input-group-addon"> 至 </span>
                                                         <input type="text" class="form-control" name="expire_time" value="{{$user->expire_time}}" id="expire_time">
                                                     </div>
                                                     <span class="help-block"> 留空默认为一年 </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="status" class="col-md-3 control-label">状态</label>
+                                                <div class="col-md-8">
+                                                    <select class="form-control" name="status" value="{{$user->status}}" id="status">
+                                                        <option value="1" @if($user->status == '1') selected @endif>正常</option>
+                                                        <option value="0" @if($user->status == '0') selected @endif>未激活</option>
+                                                        <option value="-1" @if($user->status == '-1') selected @endif>禁用</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <hr>
@@ -171,16 +205,6 @@
                                                 <label for="method" class="col-md-3 control-label">加密方式</label>
                                                 <div class="col-md-8">
                                                     <select class="form-control" name="method" id="method">
-                                                        @foreach ($method_list as $method)
-                                                            <option value="{{$method->name}}" @if($method->name == $user->method) selected @endif>{{$method->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="custom_method" class="col-md-3 control-label">自定义加密方式</label>
-                                                <div class="col-md-8">
-                                                    <select class="form-control" name="custom_method" id="custom_method">
                                                         @foreach ($method_list as $method)
                                                             <option value="{{$method->name}}" @if($method->name == $user->method) selected @endif>{{$method->name}}</option>
                                                         @endforeach
@@ -287,11 +311,14 @@
     <script src="/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        // 过期时间
-        $(".date-picker").datepicker({
-            language: 'zh-CN',
-            autoclose: true,
-            todayHighlight: true
+        // 有效期
+        $('.input-daterange input').each(function() {
+            $(this).datepicker({
+                language: 'zh-CN',
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd'
+            });
         });
 
         // ajax同步提交
@@ -303,12 +330,15 @@
             var usage = $("input:radio[name='usage']:checked").val();
             var pay_way = $("input:radio[name='pay_way']:checked").val();
             var balance = $('#balance').val();
+            var score = $('#score').val();
+            var status = $('#status').val();
             var enable_time = $('#enable_time').val();
             var expire_time = $('#expire_time').val();
             var wechat = $('#wechat').val();
             var qq = $('#qq').val();
             var is_admin = $('#is_admin').val();
             var remark = $('#remark').val();
+            var level = $("#level option:selected").val();
             var port = $('#port').val();
             var passwd = $('#passwd').val();
             var method = $('#method').val();
@@ -326,7 +356,7 @@
                 type: "POST",
                 url: "{{url('admin/editUser')}}",
                 async: false,
-                data: {_token:_token, id:id, username: username, password:password, usage:usage, pay_way:pay_way, balance:balance, enable_time:enable_time, expire_time:expire_time, wechat:wechat, qq:qq, is_admin:is_admin, remark:remark, port:port, passwd:passwd, method:method, custom_method:custom_method, transfer_enable:transfer_enable, enable:enable, protocol:protocol, protocol_param:protocol_param, obfs:obfs, obfs_param:obfs_param, speed_limit_per_con:speed_limit_per_con, speed_limit_per_user:speed_limit_per_user},
+                data: {_token:_token, id:id, username: username, password:password, usage:usage, pay_way:pay_way, balance:balance, score:score, status:status, enable_time:enable_time, expire_time:expire_time, wechat:wechat, qq:qq, is_admin:is_admin, remark:remark, level:level, port:port, passwd:passwd, method:method, custom_method:custom_method, transfer_enable:transfer_enable, enable:enable, protocol:protocol, protocol_param:protocol_param, obfs:obfs, obfs_param:obfs_param, speed_limit_per_con:speed_limit_per_con, speed_limit_per_user:speed_limit_per_user},
                 dataType: 'json',
                 success: function (ret) {
                     if (ret.status == 'success') {
@@ -344,7 +374,7 @@
 
         // 生成随机密码
         function makePasswd() {
-            $.get("{{url('makePasswd')}}",  function(ret) {
+            $.get("{{url('admin/makePasswd')}}",  function(ret) {
                 $("#passwd").val(ret);
             });
         }

@@ -33,6 +33,8 @@
                     <div class="portlet-body">
                         @if (Session::has('analysisErrorMsg'))
                             <div class="alert alert-danger">
+                                <button class="close" data-close="alert"></button>
+                                <i class="fa fa-warning"></i>
                                 {{Session::get('analysisErrorMsg')}}
                             </div>
                         @else
@@ -108,7 +110,7 @@
                 var is_rand_port = 0;
 
                 if (state) {
-                    var is_rand_port = 1;
+                    is_rand_port = 1;
                 }
 
                 $.post("{{url('admin/enableRandPort')}}", {_token:'{{csrf_token()}}', value:is_rand_port}, function (ret) {

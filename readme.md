@@ -9,18 +9,37 @@ KVM
 
 使用 LNMP1.4 部署时请到/usr/local/php/etc/php.ini下搜索disable_functions，把proc_开头的函数都删掉
 
-telegram：https://t.me/ssrpanel
+telegram频道：https://t.me/ssrpanel
+telegram群组：https://t.me/chatssrpanel
 
 默认管理账号
 用户名：admin 密码：123456
 ````
 
+#### 打赏作者一个巨无霸汉堡
+````
+哈哈，如果你觉得这套代码好用，可以请我吃一个巨无霸汉堡，微信扫一下
+将持续开发，喜欢请star一下
+````
+![打赏作者](https://github.com/ssrpanel/ssrpanel/blob/master/public/assets/images/donate.jpeg?raw=true)
+
+### 谢谢以下的人请我吃麦当劳
+| 昵称      |    金额 |
+| :------- | --------:| 
+| Law-杰   | ￥10 | 
+| Err      | ￥51 | 
+| 緃噺開始 |  ￥5 | 
+|良心***| ￥67 |
+|、无奈|￥5|
+|Sunny Woon| ￥10|
+
+
+
 #### PHP7环境配置
 ````
-建议小白用LNMP先傻瓜安装出php5.6 + mysql(5.5以上)
-然后再编译安装PHP7.1，搭建版本环境
-
-请看WIKI [编译安装PHP7.1.7环境（CentOS）]
+Laravel 5.4 + Metronic 4.7
+建议小白LNMP傻瓜安装出php7.1 + mysql(5.5以上)
+手动编译请看WIKI [编译安装PHP7.1.7环境（CentOS）]
 ````
 
 #### 拉取代码
@@ -43,6 +62,11 @@ config\database.php mysql选项自行配置数据库
 确保 storage/framework 下有 cache sessions views 三个目录，且 storage 有777权限
 ````
 
+#### 发送邮件配置
+````
+config\mail.php 修改其中的配置
+````
+
 #### NGINX配置文件加入
 ````
 location / {
@@ -55,25 +79,14 @@ location / {
 service nginx reload
 ````
 
-## 代码解释
-````
-\app\Http\Controllers 控制器文件
-\app\Http\Models 模型文件
-\config 配置信息
-\public 公共文件
-\resources\views 视图文件
-\storage 临时文件（页面缓存、日志），文件夹一个都不能少，少了必报错
-\vendor 组件
-\routes 路由
-````
-
 ## SSR服务端
 ````
+把 server目录下的 ssr-3.4.0.zip 拷贝到 /root/，解压缩，怎么运行自己上网搜
 把userapiconfig.py里的 API_INTERFACE 设置为 glzjinmod
 把user-config.json里的 connect_verbose_info 设置为 1
 ````
 
-## 日志分析
+## 日志分析（目前仅支持单节点）
 ````
 找到SSR服务端所在的ssserver.log文件
 进入ssrpanel所在目录，建立一个软连接，并授权
@@ -84,11 +97,19 @@ chown www:www ssserver.log
 
 ## 说明
 ````
-1.纯账号管理后台
-2.需要配合SSR后端使用，[请作者吃巨无霸，获取SSR后端最新版](https://github.com/ssrpanel/ssrpanel/wiki/%E8%AF%B7%E6%88%91%E5%90%83%E5%B7%A8%E6%97%A0%E9%9C%B8%F0%9F%8D%94)
-3.用户端开发中
-4.支持SS多用户json文件一键转换成SSR多用户json文件
-5.支持SSR多用户json文件一键导入数据库
+1.账号管理面板
+2.需配合SSR3.4版本后端使用
+3.强大的管理后台
+4.美观的界面
+5.支持手机自适应，方便管理账号
+6.商品（流量包）
+7.优惠券（用于购买流量包时抵用、促销）
+8.抽奖（开发中）
+9.可以注册账号，邮件激活等等
+10.剩下的自己发掘
+11.如果OK请打赏一下，接下来可能会使用glzjin大牛的魔改SSR后端，等我研究下怎么用先
+12.注意：这只是个面板，glzjin大神的面板有点丑，但是它的后端很牛逼
+（因为我不会python，改不动大神的魔改后端，目前在自学Go中，可能以后会写个Go后端）
 ````
 
 ![Markdown](http://i4.bvimg.com/1949/aac73bf589fbd785.png)

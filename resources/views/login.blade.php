@@ -18,13 +18,8 @@
     <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="/assets/global/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css" />
-    <link href="/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="/assets/pages/css/login-2.min.css" rel="stylesheet" type="text/css" />
@@ -48,23 +43,39 @@
             <button class="close" data-close="alert"></button>
             <span> 请输入用户名和密码 </span>
         </div>
-        @if (Session::get('error_msg'))
-        <div class="alert alert-danger">
-            <button class="close" data-close="alert"></button>
-            <span> {{Session::get('error_msg')}} </span>
-        </div>
+        @if (Session::get('errorMsg'))
+            <div class="alert alert-danger">
+                <button class="close" data-close="alert"></button>
+                <span> {!! Session::get('errorMsg') !!} </span>
+            </div>
         @endif
         <div class="form-group">
             <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-            <label class="control-label visible-ie8 visible-ie9">E-mail</label>
-            <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="username" /> </div>
+            <label class="control-label visible-ie8 visible-ie9">用户名</label>
+            <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="username" value="{{Request::old('username')}}" /> </div>
         <div class="form-group">
             <label class="control-label visible-ie8 visible-ie9">密码</label>
-            <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" />
-            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+            <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" value="{{Request::old('password')}}" />
+            <input type="hidden" name="_token" value="{{csrf_token()}}" />
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn red btn-block uppercase">登录</button>
+            <div class="pull-left">
+                <label class="rememberme mt-checkbox mt-checkbox-outline">
+                    <input type="checkbox" name="remember" value="1"> 记住我
+                    <span></span>
+                </label>
+            </div>
+            <div class="pull-right forget-password-block">
+                <a href="{{url('resetPassword')}}" class="forget-password">忘记密码</a>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn red btn-block uppercase">登 录</button>
+        </div>
+        <div class="create-account">
+            <p>
+                <a href="{{url('register')}}" class="btn-primary btn">注 册</a>
+            </p>
         </div>
     </form>
     <!-- END LOGIN FORM -->
@@ -79,16 +90,11 @@
 <!-- BEGIN CORE PLUGINS -->
 <script src="/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/jquery-validation/js/localization/messages_zh.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="/assets/global/scripts/app.min.js" type="text/javascript"></script>
